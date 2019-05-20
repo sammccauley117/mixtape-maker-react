@@ -8,7 +8,7 @@ class Song {
   }
 
   addFeatures(features) {
-    if (features.id == this.id) {
+    if (features.id === this.id) {
       this.features['acousticness'] = features.acousticness;
       this.features['danceability'] = features.danceability;
       this.features['energy'] = features.energy;
