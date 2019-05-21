@@ -1,6 +1,12 @@
-$light: #F8F4EE;
+$background: #121212;
+$surface: #1E1E1E;
+$light: #CECECE;
+$muted: #989898;
+
+$BORDER: 5px;
+
+// Deprecated
 $dark: #111111;
-$muted: #DBDBDB;
 $border: rgba(0,0,0,.1);
 $tan: #F1E3CE; // #F7F3ED;
 $dark-tan: #D8CCB9;
@@ -10,3 +16,12 @@ $red: #F52D3A;
 $pink: #D02467;
 $purple: #710965;
 $green: #60CC5E;
+
+rounded {
+  border-radius: $BORDER;
+}
+
+hover {
+  cursor: pointer;
+  &:hover { background-color: #2E2E2E; }
+}

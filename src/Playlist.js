@@ -81,21 +81,39 @@ class Playlist extends React.Component {
   }
 
   renderShapeButtons() {
-    return (<div>
-      <div className='playlist-shape-option' onClick={() => this.handleShapeClick('up')}>Up</div>
-      <div className='playlist-shape-option' onClick={() => this.handleShapeClick('down')}>Down</div>
-      <div className='playlist-shape-option' onClick={() => this.handleShapeClick('left skew')}>Left Skew</div>
-      <div className='playlist-shape-option' onClick={() => this.handleShapeClick('right skew')}>Right Skew</div>
-      <div className='playlist-shape-option' onClick={() => this.handleShapeClick('bell')}>Bell</div>
+    return (<div className='playlist-shape-section'>
+      <div className='playlist-section-header'>Select a sorting shape</div>
+      <div className='playlist-shape-btn-container'>
+        <div className='playlist-shape-btn' onClick={()=>this.handleShapeClick('up')}>Up</div>
+        <div className='playlist-shape-btn' onClick={()=>this.handleShapeClick('down')}>Down</div>
+        <div className='playlist-shape-btn' onClick={()=>this.handleShapeClick('left skew')}>Left Skew</div>
+        <div className='playlist-shape-btn' onClick={()=>this.handleShapeClick('right skew')}>Right Skew</div>
+        <div className='playlist-shape-btn' onClick={()=>this.handleShapeClick('bell')}>Bell</div>
+      </div>
     </div>);
   }
 
   renderFeatureButtons() {
-    return (<div>
-      <div className='playlist-feature-option' onClick={() => this.handleFeatureClick('danceability')}>Danceability</div>
-      <div className='playlist-feature-option' onClick={() => this.handleFeatureClick('energy')}>Energy</div>
-      <div className='playlist-feature-option' onClick={() => this.handleFeatureClick('tempo')}>Tempo</div>
-      <div className='playlist-feature-option' onClick={() => this.handleFeatureClick('mood')}>Mood</div>
+    return (<div className='playlist-feature-section'>
+      <div className='playlist-section-header'>Select a feature to sort by</div>
+      <div className='playlist-feature-btn-container'>
+        <div className='playlist-feature-btn' onClick={()=>this.handleFeatureClick('danceability')}>
+          <div className='playlist-feature-accent' style={{backgroundColor:'#9966FF'}}></div>
+          <div className='playlist-feature-name'>Danceability</div>
+        </div>
+        <div className='playlist-feature-btn' onClick={()=>this.handleFeatureClick('energy')}>
+          <div className='playlist-feature-accent' style={{backgroundColor:'#36A2EB'}}></div>
+          <div className='playlist-feature-name'>Energy</div>
+        </div>
+        <div className='playlist-feature-btn' onClick={()=>this.handleFeatureClick('tempo')}>
+          <div className='playlist-feature-accent' style={{backgroundColor:'#FF6384'}}></div>
+          <div className='playlist-feature-name'>Tempo</div>
+        </div>
+        <div className='playlist-feature-btn' onClick={()=>this.handleFeatureClick('mood')}>
+          <div className='playlist-feature-accent' style={{backgroundColor:'#4BC0C0'}}></div>
+          <div className='playlist-feature-name'>Mood</div>
+        </div>
+      </div>
     </div>);
   }
 
@@ -105,11 +123,14 @@ class Playlist extends React.Component {
 
     // Return rendering
     return (<div className='playlist-container'>
-      <div className="playlist-chart-container">
-        <canvas id="chart"></canvas>
+      <div className='playlist-section-header'>Graph</div>
+      <div className='playlist-chart'>
+        <div className="playlist-chart-container">
+          <canvas id="chart"></canvas>
+        </div>
       </div>
-      {shapeButtons}
       {featureButtons}
+      {shapeButtons}
     </div>);
   }
 
@@ -123,8 +144,14 @@ class Playlist extends React.Component {
         datasets: this.getDatasets(songs),
       },
       options: {
-        responsive: true,
-        maintainAspectRatio: false,
+        legend: {display: false},
+        elements: {point:{radius: 0}},
+        scales: {
+            xAxes: [{ticks:{display:false},
+              gridLines:{display:false,drawBorder:false}}],
+            yAxes: [{ticks: {display:false},
+              gridLines:{display:false,drawBorder:false}}],
+        }
         // title: {
         //   display: true,
         //   text: `${this.name}`
@@ -138,7 +165,7 @@ class Playlist extends React.Component {
   // Constructs and returns the dataset objects for Chart.js
   getDatasets(songs) {
     // Variable initialization
-    const opacity = '60';
+    const opacity = '20';
     const features = {
       'danceability':'#9966FF',
       'energy':'#36A2EB',
@@ -178,7 +205,6 @@ class Playlist extends React.Component {
     });
     this.chart.update(); // 'Push' the updates
   }
-
 }
 
 export default Playlist;

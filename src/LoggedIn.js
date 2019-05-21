@@ -71,7 +71,6 @@ class LoggedOut extends React.Component {
         });
       });
     } else { // Songs and features have already been loaded for this playlist
-      console.log('we good');
       this.setState({
         view: 'playlist',
         selected: playlists[selected]
@@ -126,7 +125,7 @@ class LoggedOut extends React.Component {
           {back}
           Mixtape Maker
         </div>
-        {content}
+        <div class="logged-in-content">{content}</div>
       </div>
     );
   }

@@ -32,3 +32,8 @@
   width: 25px;
   background-color: lime;
 }
+.logged-in-content {
+  // display: flex;
+  background-color: $background;
+  justify-content: center;
+}
