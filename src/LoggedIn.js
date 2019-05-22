@@ -110,7 +110,7 @@ class LoggedIn extends React.Component {
 
   // Creates a back button to display in the header--when clicked it takes the user back to list view
   renderBack() {
-    return <div className='logged-in-back-button' onClick={() => this.setState({view: 'list'})}></div>
+    return <img src='./back.svg' onClick={() => this.setState({view: 'list'})}/>
   }
 
   render() {
@@ -139,7 +139,9 @@ class LoggedIn extends React.Component {
           <div className="logged-in-header-container">
             <div className="logged-in-back-container">{back}</div>
             <div className="logged-in-title">Mixtape Maker</div>
-            <div className="logged-in-logout-container"></div>
+            <div className="logged-in-logout-container">
+              <a href="/"><img src="./home.svg"/></a>
+            </div>
           </div>
         </div>
         <div className="logged-in-content">{content}</div>

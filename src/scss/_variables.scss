@@ -1,6 +1,6 @@
 $background: #121212;
 $surface: #1E1E1E;
-$light: #F7F3ED;
+$light: #555;
 $muted: rgba(255,255,255,.2);
 
 $BORDER: 5px;
@@ -36,6 +36,10 @@ rounded {
 hover {
   cursor: pointer;
   &:hover { background-color: #2E2E2E; }
+}
+
+.shadow {
+  box-shadow: 5px 5px 10px black;
 }
 
 .container {
