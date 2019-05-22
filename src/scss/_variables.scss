@@ -1,9 +1,14 @@
 $background: #121212;
 $surface: #1E1E1E;
-$light: #CECECE;
-$muted: #989898;
+$light: #F7F3ED;
+$muted: rgba(255,255,255,.2);
 
 $BORDER: 5px;
+
+$spotify: #1DB954;
+
+$mobile: 576px;
+$tablet: 992px;
 
 // Deprecated
 $dark: #111111;
@@ -24,4 +29,11 @@ rounded {
 hover {
   cursor: pointer;
   &:hover { background-color: #2E2E2E; }
+}
+
+.container {
+  max-width: 960px;
+  @media (max-width: $mobile) {
+    width: 100%;
+  }
 }

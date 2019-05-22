@@ -9,15 +9,8 @@ class LoggedOut extends React.Component {
   render() {
     return (
       <div className="logged-out-container">
-        <div className="logged-out-title">Mixtape Maker</div>
-        <div className="logged-out-description"></div>
-        <div className="logged-out-colors">
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
+        <img className="logged-out-logo" src="logo.png"/>
+        <div className="logged-out-description">Create perfectly flowing, curated playlists for the occasion–use song features such as energy and danceability to give your playlists shape and structure</div>
         <div className="logged-out-login">
           <a href="http://192.168.1.8:3001/login">LOGIN TO SPOTIFY</a>
         </div>
