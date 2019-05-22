@@ -4,7 +4,7 @@ import Playlist from './Playlist.js';
 import './scss/LoggedIn.scss';
 const axios = require('axios');
 
-class LoggedOut extends React.Component {
+class LoggedIn extends React.Component {
   // On creation
   constructor(props) {
     // Initialization
@@ -82,16 +82,26 @@ class LoggedOut extends React.Component {
   // Creates a div element: a list of playlist titles for the user to interact with
   renderList() {
     // Iterate through all user's playlist, creating individual divs for each one
+    console.log(this.state.playlists);
     let listItems = this.state.playlists.map(playlist => {
-      return <div className="logged-in-list-item"
-      onClick={() => this.handlePlaylistClick(playlist.id)}
-      key={playlist.id}>
-        <div>{playlist.name}</div>
-      </div>
+      // Only show valid playlists
+      if(playlist.images.length !== 0 && playlist.tracks.total !== 0) {
+        return <div className="logged-in-list-item">
+          <div className="logged-in-card"
+          onClick={() => this.handlePlaylistClick(playlist.id)}
+          key={playlist.id}>
+            <img src={playlist.images[0].url}/>
+            <div>{playlist.name}</div>
+          </div>
+        </div>
+      }
     });
 
     // Return a div containing each playlist
-    return <div className="logged-in-list-container">{listItems}</div>
+    return <div className="logged-in-list-content">
+      <div className="logged-in-list-header">Select a playlist</div>
+      <div className="logged-in-list-container">{listItems}</div>
+    </div>;
   }
 
   // Creates a back button to display in the header--when clicked it takes the user back to list view
@@ -122,13 +132,16 @@ class LoggedOut extends React.Component {
     return (
       <div className="logged-in-container">
         <div className="logged-in-header">
-          {back}
-          Mixtape Maker
+          <div className="logged-in-header-container">
+            <div className="logged-in-back-container">{back}</div>
+            <div className="logged-in-title">Mixtape Maker</div>
+            <div className="logged-in-logout-container"></div>
+          </div>
         </div>
-        <div class="logged-in-content">{content}</div>
+        <div className="logged-in-content">{content}</div>
       </div>
     );
   }
 }
 
-export default LoggedOut;
+export default LoggedIn;
