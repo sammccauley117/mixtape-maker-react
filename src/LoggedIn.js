@@ -1,5 +1,6 @@
 import React from 'react';
 import Song from './Song.js';
+import Loading from './Loading.js';
 import Playlist from './Playlist.js';
 import './scss/LoggedIn.scss';
 const axios = require('axios');
@@ -26,7 +27,10 @@ class LoggedIn extends React.Component {
     });
 
     // Wait for both requests to resolve before displaying the list view
-    Promise.all([id, playlists]).then(() => this.setState({view: 'list'}));
+    Promise.all([id, playlists]).then(() => {
+      // Wait 1 second so that the loading image can be seen and not just flash
+      setTimeout(() => this.setState({view: 'list'}), 1000);
+    });
   }
 
   // Easy GET requests
@@ -118,7 +122,7 @@ class LoggedIn extends React.Component {
     // Determine which view we're in
     switch(view) {
       case 'loading':
-        content = <h1>Loading</h1>; break;
+        content = <Loading/>; break;
       case 'list':
         content = this.renderList(); break;
       case 'playlist':
