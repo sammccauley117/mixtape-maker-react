@@ -38,9 +38,8 @@ hover {
   &:hover { background-color: #2E2E2E; }
 }
 
-.shadow {
-  box-shadow: 5px 5px 10px black;
-}
+.shadow { box-shadow: 5px 5px 10px black; }
+.shadow-light { box-shadow: 5px 5px 20px rgba(0,0,0,.5); }
 
 .container {
   max-width: 960px;

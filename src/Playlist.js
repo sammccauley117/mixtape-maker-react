@@ -9,7 +9,6 @@ class Playlist extends React.Component {
   constructor(props) {
     // Initialization
     super(props);
-    console.log(this.props);
     this.sortedSongs = [];
     this.isSorted = false;
     this.inverted = false;
@@ -56,8 +55,66 @@ class Playlist extends React.Component {
     return this.sortedSongs.slice();
   }
 
+  create() {
+    console.log(this.props);
+    if(this.isSorted) {
+      let name = prompt(`Select a playlist name for '${this.props.playlist.name}' sorted by ${this.feature} in a(n) ${this.inverted?'inverted '+this.shape:this.shape} shape. This will create a whole new playlist and not affect your current one at all.`, `${this.props.playlist.name} - sorted`);
+      if(name !== null && name !== '') {
+        axios({
+          method: 'post',
+          url: `https://api.spotify.com/v1/users/${this.props.userID}/playlists`,
+          headers: {
+            'Authorization': 'Bearer ' + this.props.token,
+            'Content-Type': 'application/json'
+          },
+          data: {'name':name}
+        }).then(response => {
+          if(response.status === 201) {
+            axios({
+              method: 'post',
+              url: `https://api.spotify.com/v1/playlists/${response.data.id}/tracks`,
+              headers: {
+                'Authorization': 'Bearer ' + this.props.token,
+                'Content-Type': 'application/json'
+              },
+              data: {
+                'uris': this.sortedSongs.map(song => song.uri)
+              }
+            }).then(response => {
+              console.log(response);
+              alert('Sorted playlist created!');
+            }).catch(e => {
+              alert(`Something went wrong: ${e}`);
+            });
+          } else {
+            alert('Something went wrong\nStatus: ${response.status}');
+          }
+        }).catch(e => {
+          alert(`Something went wrong: ${e}`);
+        });
+        //
+        // , {
+        //
+        //   data: {
+        //     'name': name,
+        //     // 'public': this.props.playlist.public,
+        //     // 'collaborative': this.props.playlist.collaborative,
+        //     // 'description': `'${this.props.playlist.name}' sorted [${this.feature}] ${this.inverted?'['+this.shape+'] '+'[inverted]':'['+this.shape+'] '} - www.mixtape-maker.xyz`
+        // }}).then(()=>console.log('yeet')).catch((e)=>{
+        //   console.log(e);
+        // });
+      } else {
+        alert('Please enter a valid playlist name');
+        this.create();
+      }
+    } else {
+      alert('You must sort the playlist before creating a new one');
+    }
+  }
+
   handleShapeClick(shape) {
-    this.shape = shape;
+    if(shape !== 'invert') this.shape = shape;
+    if(shape === 'invert' && this.shape === null) this.shape = 'up';
     switch(shape) {
       case 'down':
         this.peak = 0; break;
@@ -69,7 +126,11 @@ class Playlist extends React.Component {
         this.peak = 3; break;
       case 'up':
         this.peak = 4; break;
+      case 'invert':
+        this.inverted = !this.inverted; break;
     }
+    // Check if shape was clicked before feature--if so set energy as default
+    if(this.feature === null) this.feature = 'energy';
     this.sort();
     this.updateChart();
   }
@@ -89,6 +150,7 @@ class Playlist extends React.Component {
         <div className='playlist-shape-btn' onClick={()=>this.handleShapeClick('left skew')}>Left Skew</div>
         <div className='playlist-shape-btn' onClick={()=>this.handleShapeClick('right skew')}>Right Skew</div>
         <div className='playlist-shape-btn' onClick={()=>this.handleShapeClick('bell')}>Bell</div>
+        <div className='playlist-shape-btn' onClick={()=>this.handleShapeClick('invert')}>Invert</div>
       </div>
     </div>);
   }
@@ -98,19 +160,19 @@ class Playlist extends React.Component {
       <div className='playlist-section-header'>Select a feature to sort by</div>
       <div className='playlist-feature-btn-container'>
         <div className='playlist-feature-btn' onClick={()=>this.handleFeatureClick('danceability')}>
-          <div className='playlist-feature-accent' style={{backgroundColor:'#9966FF'}}></div>
+          <div className='playlist-feature-accent' style={{backgroundColor:'#FD4928'}}></div>
           <div className='playlist-feature-name'>Danceability</div>
         </div>
         <div className='playlist-feature-btn' onClick={()=>this.handleFeatureClick('energy')}>
-          <div className='playlist-feature-accent' style={{backgroundColor:'#36A2EB'}}></div>
+          <div className='playlist-feature-accent' style={{backgroundColor:'#1DB952'}}></div>
           <div className='playlist-feature-name'>Energy</div>
         </div>
         <div className='playlist-feature-btn' onClick={()=>this.handleFeatureClick('tempo')}>
-          <div className='playlist-feature-accent' style={{backgroundColor:'#FF6384'}}></div>
+          <div className='playlist-feature-accent' style={{backgroundColor:'#FD9528'}}></div>
           <div className='playlist-feature-name'>Tempo</div>
         </div>
         <div className='playlist-feature-btn' onClick={()=>this.handleFeatureClick('mood')}>
-          <div className='playlist-feature-accent' style={{backgroundColor:'#4BC0C0'}}></div>
+          <div className='playlist-feature-accent' style={{backgroundColor:'#1E7E9E'}}></div>
           <div className='playlist-feature-name'>Mood</div>
         </div>
       </div>
@@ -123,7 +185,7 @@ class Playlist extends React.Component {
 
     // Return rendering
     return (<div className='playlist-container'>
-      <div className='playlist-section-header'>Graph</div>
+      <div className='playlist-section-header graph-header'>Sorted feature graph of <i>{this.props.playlist.name}</i></div>
       <div className='playlist-chart'>
         <div className="playlist-chart-container">
           <canvas id="chart"></canvas>
@@ -131,6 +193,9 @@ class Playlist extends React.Component {
       </div>
       {featureButtons}
       {shapeButtons}
+      <div className="playlist-create">
+        <div onClick={()=>this.create()}>Create new playlist</div>
+      </div>
     </div>);
   }
 
@@ -146,18 +211,13 @@ class Playlist extends React.Component {
       options: {
         legend: {display: false},
         elements: {point:{radius: 0}},
+        layout: {padding:{top: 5}},
         scales: {
             xAxes: [{ticks:{display:false},
               gridLines:{display:false,drawBorder:false}}],
             yAxes: [{ticks: {display:false},
               gridLines:{display:false,drawBorder:false}}],
-        }
-        // title: {
-        //   display: true,
-        //   text: `${this.name}`
-        // },
-        // tooltips: TOOLTIPS, // Bad practice, but the options config is whack so for now it's in config.js
-        // scales: SCALES // Same bad practice
+        },
       }
     });
   }
@@ -165,12 +225,12 @@ class Playlist extends React.Component {
   // Constructs and returns the dataset objects for Chart.js
   getDatasets(songs) {
     // Variable initialization
-    const opacity = '20';
+    const opacity = '15';
     const features = {
-      'danceability':'#9966FF',
-      'energy':'#36A2EB',
-      'tempo':'#FF6384',
-      'mood':'#4BC0C0'
+      'danceability':'#FD4928',
+      'energy':'#1DB952',
+      'tempo':'#FD9528',
+      'mood':'#1E7E9E'
     };
     let tempoScale = Math.max(...songs.map(song => song.tempo)); // We want tempo to be in the 0-1 range for graphing
     let datasets = [];
