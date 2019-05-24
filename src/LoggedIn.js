@@ -18,6 +18,7 @@ class LoggedIn extends React.Component {
     // Request user ID as well as a list of their playlists
     let id = this.get('me').then(response => this.setState({userID: response.data.id}));
     let playlists = this.get('me/playlists?limit=50').then(response => {
+      console.log(response);
       // Initialize playlist loaded variable to false and set state of playlists
       this.setState({playlists: response.data.items.map(item => {
         item.loaded = false;
@@ -30,6 +31,9 @@ class LoggedIn extends React.Component {
     Promise.all([id, playlists]).then(() => {
       // Wait 1 second so that the loading image can be seen and not just flash
       setTimeout(() => this.setState({view: 'list'}), 1000);
+    }).catch(e => {
+      alert(`${e}\n\nRedirecting to homepage--try logging in again`);
+      window.location.href = "/";
     });
   }
 
