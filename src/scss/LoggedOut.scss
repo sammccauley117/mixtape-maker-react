@@ -14,7 +14,7 @@
   width: 40%;
 }
 
-.logged-out-description {
+.logged-out-caption {
   width: 40%;
   color: $muted;
   font-style: italic;
@@ -42,8 +42,61 @@
   }
 }
 
+.list-section-header {
+  text-align: center;
+  font-size: 1.25rem;
+  color: $light;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+.list-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .list-item {
+    @extend rounded;
+    background-color: $surface;
+    margin-bottom: 10px;
+    width: 60%;
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    .list-number {
+      font-size: 1.25rem;
+      font-weight: bold;
+      font-style: italic;
+      padding: 10px;
+      padding-right: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .list-description {
+      text-align: justify;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+  // background-color: red;
+}
+
+.git {
+  margin-top: 32px;
+  margin-bottom: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: .65rem;
+  line-height: 2;
+  img {
+    width: 32px;
+  }
+}
+
 // Mobile support
 @media (max-width: $mobile) {
   .logged-out-logo { width: 90%; }
-  .logged-out-description { width: 90%; }
+  .logged-out-caption { width: 90%; }
+  .list-item { width: 95% !important; }
 }
