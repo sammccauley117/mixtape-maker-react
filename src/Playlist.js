@@ -112,6 +112,33 @@ class Playlist extends React.Component {
     }
   }
 
+  updateSelected() {
+    // Clear all
+    let ids = ['up', 'down', 'left', 'right', 'bell', 'invert',
+      'danceability', 'energy', 'tempo', 'mood'];
+    ids.forEach(id => document.getElementById(id).classList.remove("selected"));
+    // document.getElementById("up").classList.remove("selected");
+    // document.getElementById("down").classList.remove("selected");
+    // document.getElementById("left").classList.remove("selected");
+    // document.getElementById("right").classList.remove("selected");
+    // document.getElementById("bell").classList.remove("selected");
+    // document.getElementById("invert").classList.remove("selected");
+    switch(this.shape) {
+      case 'up': document.getElementById("up").classList.add("selected"); break;
+      case 'down': document.getElementById("down").classList.add("selected"); break;
+      case 'left skew': document.getElementById("left").classList.add("selected"); break;
+      case 'right skew': document.getElementById("right").classList.add("selected"); break;
+      case 'bell': document.getElementById("bell").classList.add("selected"); break;
+    }
+    if(this.inverted) document.getElementById("invert").classList.add("selected");
+    switch(this.feature) {
+      case 'danceability': document.getElementById("danceability").classList.add("selected"); break;
+      case 'energy': document.getElementById("energy").classList.add("selected"); break;
+      case 'tempo': document.getElementById("tempo").classList.add("selected"); break;
+      case 'mood': document.getElementById("mood").classList.add("selected"); break;
+    }
+  }
+
   handleShapeClick(shape) {
     if(shape !== 'invert') this.shape = shape;
     if(shape === 'invert' && this.shape === null) this.shape = 'up';
@@ -131,12 +158,15 @@ class Playlist extends React.Component {
     }
     // Check if shape was clicked before feature--if so set energy as default
     if(this.feature === null) this.feature = 'energy';
+    this.updateSelected();
     this.sort();
     this.updateChart();
   }
 
   handleFeatureClick(feature) {
     this.feature = feature;
+    if(this.shape === null) this.shape = 'up';
+    this.updateSelected();
     this.sort();
     this.updateChart();
   }
@@ -145,12 +175,12 @@ class Playlist extends React.Component {
     return (<div className='playlist-shape-section'>
       <div className='playlist-section-header'>Select a sorting shape</div>
       <div className='playlist-shape-btn-container'>
-        <div className='playlist-shape-btn' onClick={()=>this.handleShapeClick('up')}>Up</div>
-        <div className='playlist-shape-btn' onClick={()=>this.handleShapeClick('down')}>Down</div>
-        <div className='playlist-shape-btn' onClick={()=>this.handleShapeClick('left skew')}>Left Skew</div>
-        <div className='playlist-shape-btn' onClick={()=>this.handleShapeClick('right skew')}>Right Skew</div>
-        <div className='playlist-shape-btn' onClick={()=>this.handleShapeClick('bell')}>Bell</div>
-        <div className='playlist-shape-btn' onClick={()=>this.handleShapeClick('invert')}>Invert</div>
+        <div className='playlist-shape-btn' id="up" onClick={()=>this.handleShapeClick('up')}>Up</div>
+        <div className='playlist-shape-btn' id="down" onClick={()=>this.handleShapeClick('down')}>Down</div>
+        <div className='playlist-shape-btn' id="left" onClick={()=>this.handleShapeClick('left skew')}>Left Skew</div>
+        <div className='playlist-shape-btn' id="right" onClick={()=>this.handleShapeClick('right skew')}>Right Skew</div>
+        <div className='playlist-shape-btn' id="bell" onClick={()=>this.handleShapeClick('bell')}>Bell</div>
+        <div className='playlist-shape-btn' id="invert" onClick={()=>this.handleShapeClick('invert')}>Invert</div>
       </div>
     </div>);
   }
@@ -159,19 +189,19 @@ class Playlist extends React.Component {
     return (<div className='playlist-feature-section'>
       <div className='playlist-section-header'>Select a feature to sort by</div>
       <div className='playlist-feature-btn-container'>
-        <div className='playlist-feature-btn' onClick={()=>this.handleFeatureClick('danceability')}>
+        <div className='playlist-feature-btn' id="danceability" onClick={()=>this.handleFeatureClick('danceability')}>
           <div className='playlist-feature-accent' style={{backgroundColor:'#FD4928'}}></div>
           <div className='playlist-feature-name'>Danceability</div>
         </div>
-        <div className='playlist-feature-btn' onClick={()=>this.handleFeatureClick('energy')}>
+        <div className='playlist-feature-btn' id="energy" onClick={()=>this.handleFeatureClick('energy')}>
           <div className='playlist-feature-accent' style={{backgroundColor:'#1DB952'}}></div>
           <div className='playlist-feature-name'>Energy</div>
         </div>
-        <div className='playlist-feature-btn' onClick={()=>this.handleFeatureClick('tempo')}>
+        <div className='playlist-feature-btn' id="tempo" onClick={()=>this.handleFeatureClick('tempo')}>
           <div className='playlist-feature-accent' style={{backgroundColor:'#FD9528'}}></div>
           <div className='playlist-feature-name'>Tempo</div>
         </div>
-        <div className='playlist-feature-btn' onClick={()=>this.handleFeatureClick('mood')}>
+        <div className='playlist-feature-btn' id="mood" onClick={()=>this.handleFeatureClick('mood')}>
           <div className='playlist-feature-accent' style={{backgroundColor:'#1E7E9E'}}></div>
           <div className='playlist-feature-name'>Mood</div>
         </div>
