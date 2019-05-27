@@ -81,8 +81,8 @@ class Playlist extends React.Component {
                 'uris': this.sortedSongs.map(song => song.uri)
               }
             }).then(response => {
-              console.log(response);
               alert('Sorted playlist created!');
+              window.location.reload(); // Take user back to list view
             }).catch(e => {
               alert(`Something went wrong: ${e}`);
             });
@@ -117,12 +117,6 @@ class Playlist extends React.Component {
     let ids = ['up', 'down', 'left', 'right', 'bell', 'invert',
       'danceability', 'energy', 'tempo', 'mood'];
     ids.forEach(id => document.getElementById(id).classList.remove("selected"));
-    // document.getElementById("up").classList.remove("selected");
-    // document.getElementById("down").classList.remove("selected");
-    // document.getElementById("left").classList.remove("selected");
-    // document.getElementById("right").classList.remove("selected");
-    // document.getElementById("bell").classList.remove("selected");
-    // document.getElementById("invert").classList.remove("selected");
     switch(this.shape) {
       case 'up': document.getElementById("up").classList.add("selected"); break;
       case 'down': document.getElementById("down").classList.add("selected"); break;
