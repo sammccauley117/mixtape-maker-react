@@ -49,6 +49,10 @@ class LoggedIn extends React.Component {
     // Find index of which playlist object was selected
     let selected = this.state.playlists.findIndex(playlist => playlist.id === id);
 
+    if(this.state.playlists[selected].tracks.total > 100) {
+      alert("Warning: Mixtape Maker currently only supports the first 100 songs of a playlist");
+    }
+
     // Update view and selected states (load the playlist data if applicable)
     let playlists = this.state.playlists;
     if (!playlists[selected].loaded) { // Need to load the playlist data before changing the state
@@ -84,7 +88,6 @@ class LoggedIn extends React.Component {
         selected: playlists[selected]
       });
     }
-
   }
 
   // Creates a div element: a list of playlist titles for the user to interact with
