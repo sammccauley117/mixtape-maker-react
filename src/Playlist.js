@@ -215,7 +215,7 @@ class Playlist extends React.Component {
 
     // Return rendering
     return (<div className='playlist-container'>
-      <div className='playlist-section-header graph-header'>Sorted feature graph of <i>{this.props.playlist.name}</i></div>
+      <div className='playlist-section-header graph-header'>Song v. Feature of <i>{this.props.playlist.name}</i></div>
       <div className='playlist-chart'>
         <div className="playlist-chart-container">
           <canvas id="chart"></canvas>
