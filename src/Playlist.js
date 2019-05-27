@@ -240,13 +240,22 @@ class Playlist extends React.Component {
       },
       options: {
         legend: {display: false},
-        elements: {point:{radius: 0}},
-        layout: {padding:{top: 5}},
+        layout: {padding:{top: 10, right: 10}},
         scales: {
-            xAxes: [{ticks:{display:false},
-              gridLines:{display:false,drawBorder:false}}],
-            yAxes: [{ticks: {display:false},
-              gridLines:{display:false,drawBorder:false}}],
+          xAxes: [{
+            ticks: {display:false},
+            scaleLabel: {
+              display: true,
+              labelString: 'Songs',
+              fontColor: '#555555'},
+            gridLines: {color:'#252525'}}],
+            yAxes: [{
+              ticks: {display:false},
+              scaleLabel: {
+                display: true,
+                labelString: 'Features',
+                fontColor: '#555555'},
+              gridLines: {color:'#252525',zeroLineColor:'#252525'}}],
         },
       }
     });
